@@ -5,24 +5,42 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Колесо фортуны — рандом колесо</title>
   <meta name="description" content="Колесо фортуны — бесплатный рандомайзер: колесо удачи, рулетка для случайного выбора и розыгрышей. Добавьте варианты и крутите!" />
+  <meta name="keywords" content="колесо фортуны, рандом, рандомайзер, рулетка, колесо удачи, random wheel, случайный выбор, генератор решений, выбор победителя, розыгрыш" />
   <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#2563eb" />
+  <meta property="og:title" content="Колесо фортуны — рандом колесо" />
+  <meta property="og:description" content="Рандом рулетка для выбора победителя и быстрых решений. Mobile‑first, без регистрации." />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="ru_RU" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Колесо фортуны — рандом колесо" />
+  <meta name="twitter:description" content="Рандом рулетка для выбора победителя и быстрых решений." />
+  <link rel="icon" href="/favicon.ico" />
   <style>
     :root{ --bg:#f7f7fb; --panel:#ffffff; --text:#111827; --muted:#6b7280; --primary:#2563eb; --border:#e5e7eb; --pointer:#ef4444; }
     *{box-sizing:border-box}
+    html,body{height:100%; width:100%; overflow-x:hidden}
+    body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif}
     html,body{height:100%}
     body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif}
-    header{position:sticky;top:0;background:#fff;border-bottom:1px solid var(--border);z-index:10}
+    a{color:inherit}
+    header.hdr{position:sticky;top:0;background:linear-gradient(180deg,#ffffff 0%,#fafafa 100%);border-bottom:1px solid var(--border);z-index:10}
     header .inner{display:flex;align-items:center;gap:16px;max-width:1100px;margin:0 auto;padding:14px 16px}
-    .brand{font-weight:900}
+    .logo{display:flex;align-items:center;gap:10px}
+    .logoMark{width:28px;height:28px;border-radius:8px;background:conic-gradient(from 0deg,#60a5fa,#a78bfa,#f472b6,#fb923c,#34d399,#60a5fa);box-shadow:0 6px 14px rgba(0,0,0,.08)}
+    .brand{font-weight:900;letter-spacing:.2px;font-size:18px}
     nav{margin-left:auto;display:flex;gap:10px}
-    nav a{padding:8px 10px;border-radius:10px;text-decoration:none;border:1px solid var(--border);background:#fff;color:#111827}
-    .badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;padding:6px 10px;border-radius:999px;border:1px solid var(--border);color:var(--muted);background:#fff}
-    .notice{border:1px dashed #f59e0b;color:#b45309;background:#fff7ed}
+    nav a{padding:8px 10px;border-radius:10px;text-decoration:none;border:1px solid var(--border);background:#fff}
+    .hdrShadow{height:10px;filter:blur(8px);background:linear-gradient(180deg,rgba(0,0,0,.06),transparent)}
+
     .container{max-width:1100px;margin:0 auto;padding:16px}
     .grid{display:grid;grid-template-columns:1fr;gap:16px}
     @media(min-width:960px){.grid{grid-template-columns:1fr 360px}}
     .card{background:var(--panel);border:1px solid var(--border);border-radius:14px;box-shadow:0 6px 16px rgba(0,0,0,.04)}
     .card.pad{padding:16px}
+    .badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;padding:6px 10px;border-radius:999px;border:1px solid var(--border);color:var(--muted);background:#fff}
+    .notice{border:1px dashed #f59e0b;color:#b45309;background:#fff7ed}
+
     .wheelWrap{position:relative;aspect-ratio:1/1;width:100%}
     #wheelCanvas{width:100%;height:100%;display:block;border-radius:14px}
     .pointer{position:absolute;top:-2px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:16px solid transparent;border-right:16px solid transparent;border-bottom:26px solid var(--pointer);filter:drop-shadow(0 2px 4px rgba(0,0,0,.25))}
@@ -30,28 +48,34 @@
     .spinBtn{appearance:none;border:0;background:var(--primary);color:#fff;font-weight:800;border-radius:999px;padding:14px 22px;cursor:pointer;box-shadow:0 6px 16px rgba(37,99,235,.35)}
     .spinBtn:disabled{opacity:.6;cursor:not-allowed}
     .resultBar{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:10px}
+
+    .side h2{font-size:18px;margin:0 0 10px}
     textarea{width:100%;min-height:100px;background:#fff;border:1px solid var(--border);border-radius:10px;padding:10px;font-size:14px;color:var(--text)}
     .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
-    input[type="text"]{flex:1;min-width:0;background:#fff;border:1px solid var(--border);border-radius:10px;padding:10px}
-    button{appearance:none;border:1px solid var(--border);background:#fff;color:#111827;padding:10px 12px;border-radius:10px;cursor:pointer}
+    input[type="text"],input[type="search"]{flex:1;min-width:0;background:#fff;border:1px solid var(--border);border-radius:10px;padding:10px}
+    button{appearance:none;border:1px solid var(--border);background:#fff;color:var(--text);padding:10px 12px;border-radius:10px;cursor:pointer}
     .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
     .chip{font-size:12px;background:#f3f4f6;border:1px solid var(--border);padding:6px 10px;border-radius:999px}
     .chip.rem{cursor:pointer}
+
     #confetti{position:absolute;inset:0;pointer-events:none}
+
     .admin{border-color:#dbeafe}
     .hr{height:1px;background:var(--border);margin:12px 0}
+
     footer{margin-top:24px;background:#fff;border-top:1px solid var(--border)}
     footer .inner{display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between;max-width:1100px;margin:0 auto;padding:14px 16px}
   </style>
 </head>
 <body>
-  <header>
+  <header class="hdr">
     <div class="inner">
-      <div class="brand">Колесо фортуны</div>
+      <div class="logo"><div class="logoMark"></div><div class="brand">Колесо фортуны</div></div>
       <nav>
         <a href="#sec-wheel">Колесо</a>
       </nav>
     </div>
+    <div class="hdrShadow"></div>
   </header>
 
   <div class="container">
@@ -66,10 +90,10 @@
         <div class="resultBar"><span class="badge">Результат:</span> <strong id="result">—</strong></div>
       </section>
 
-      <section id="sec-list">
+      <section id="sec-list" class="side">
         <div class="card pad" style="margin-bottom:16px">
           <h2>Список значений</h2>
-          <p style="margin:.4rem 0;color:#6b7280">Через запятую. Минимум 2.</p>
+          <p style="margin:.4rem 0;color:var(--muted)">Через запятую. Минимум 2.</p>
           <textarea id="itemsInput">Яблоко, Банан, Вишня, Манго, Киви, Персик</textarea>
           <div class="row">
             <input id="newItem" type="text" placeholder="Добавить элемент…" />
@@ -86,7 +110,6 @@
           <div class="row"><input id="forceValue" type="text" placeholder="Принудительное значение (как в списке)" /></div>
           <div class="row"><button id="saveAdmin">Сохранить</button><button id="clearAdmin">Очистить</button></div>
           <div class="hr"></div>
-          <small style="color:#6b7280">Только для демо/QA. В этом режиме интерфейс помечён жёлтой плашкой.</small>
         </div>
       </section>
     </div>
@@ -96,7 +119,7 @@
     <div class="inner">
       <div><strong>Колесо фортуны</strong> — рандом колесо для случайного выбора, розыгрышей и быстрых решений.
       </div>
-      <div style="display:flex;gap:12px"><a href="#sec-wheel" class="badge" style="text-decoration:none">Крутить</a><a href="#sec-list" class="badge" style="text-decoration:none">Список</a></div>
+      <div style="display:flex;gap:12px"><a href="#sec-wheel" class="badge" style="text-decoration:none">Крутить</a></div>
       <div style="flex-basis:100%;height:1px;background:#e5e7eb"></div>
       <div style="font-size:12px;color:#6b7280">© <span id="year"></span> Колесо фортуны. Все права защищены.</div>
     </div>
@@ -105,63 +128,51 @@
 <script>
 (function(){
   'use strict';
-
-  // ===== Admin / URL state
+  // URL / Admin / Test mode
   var qs = new URLSearchParams(location.search);
   var ADMIN = qs.get('admin') === '1';
-  var testBadge = document.getElementById('testBadge');
   var adminPanel = document.getElementById('adminPanel');
+  var testBadge = document.getElementById('testBadge');
 
   var storedTest = localStorage.getItem('demo.test') === '1';
   var storedForce = localStorage.getItem('demo.force') || '';
+
   var TEST_MODE = (qs.has('test') ? qs.get('test') === '1' : storedTest);
   var FORCE_VALUE = (qs.has('force') ? qs.get('force') : storedForce).trim();
 
-  function updateBadges(){
-    if(testBadge){ testBadge.style.display = TEST_MODE ? 'inline-flex' : 'none'; }
-  }
+  function updateBadges(){ if(testBadge){ testBadge.style.display = TEST_MODE ? 'inline-flex' : 'none'; } }
   updateBadges();
 
-  if(ADMIN && adminPanel){
+  if (ADMIN && adminPanel) {
     adminPanel.style.display = 'block';
     var enableTestEl = document.getElementById('enableTest');
     var forceValueEl = document.getElementById('forceValue');
     var saveAdminBtn = document.getElementById('saveAdmin');
     var clearAdminBtn = document.getElementById('clearAdmin');
-    if(enableTestEl) enableTestEl.checked = TEST_MODE;
-    if(forceValueEl) forceValueEl.value = FORCE_VALUE;
+    if(enableTestEl){ enableTestEl.checked = TEST_MODE; }
+    if(forceValueEl){ forceValueEl.value = FORCE_VALUE; }
 
-    if(saveAdminBtn) saveAdminBtn.addEventListener('click', function(){
-      TEST_MODE = enableTestEl && enableTestEl.checked;
-      FORCE_VALUE = forceValueEl && forceValueEl.value ? forceValueEl.value.trim() : '';
-      try{
-        localStorage.setItem('demo.test', TEST_MODE ? '1' : '0');
-        localStorage.setItem('demo.force', FORCE_VALUE);
-      }catch(e){}
+    if(saveAdminBtn){ saveAdminBtn.addEventListener('click', function(){
+      TEST_MODE = !!(enableTestEl && enableTestEl.checked);
+      FORCE_VALUE = (forceValueEl && forceValueEl.value ? forceValueEl.value : '').trim();
+      try { localStorage.setItem('demo.test', TEST_MODE ? '1':'0'); localStorage.setItem('demo.force', FORCE_VALUE); } catch(e){}
       var p = new URLSearchParams(location.search);
       p.set('admin','1');
-      if(TEST_MODE) p.set('test','1'); else p.delete('test');
-      if(FORCE_VALUE) p.set('force', FORCE_VALUE); else p.delete('force');
+      if (TEST_MODE) { p.set('test','1'); } else { p.delete('test'); }
+      if (FORCE_VALUE) { p.set('force', FORCE_VALUE); } else { p.delete('force'); }
       history.replaceState(null,'',location.pathname+'?'+p.toString());
       updateBadges();
-    });
-
-    if(clearAdminBtn) clearAdminBtn.addEventListener('click', function(){
-      try{
-        localStorage.removeItem('demo.test');
-        localStorage.removeItem('demo.force');
-      }catch(e){}
-      TEST_MODE = false; FORCE_VALUE='';
-      if(enableTestEl) enableTestEl.checked = false;
-      if(forceValueEl) forceValueEl.value = '';
-      var p2 = new URLSearchParams(location.search);
-      p2.delete('test'); p2.delete('force'); p2.set('admin','1');
+    }); }
+    if(clearAdminBtn){ clearAdminBtn.addEventListener('click', function(){
+      try { localStorage.removeItem('demo.test'); localStorage.removeItem('demo.force'); } catch(e){}
+      TEST_MODE = false; FORCE_VALUE=''; if(enableTestEl){ enableTestEl.checked=false; } if(forceValueEl){ forceValueEl.value=''; }
+      var p2 = new URLSearchParams(location.search); p2.delete('test'); p2.delete('force'); p2.set('admin','1');
       history.replaceState(null,'',location.pathname+'?'+p2.toString());
       updateBadges();
-    });
+    }); }
   }
 
-  // ===== Elements
+  // Elements
   var itemsInput = document.getElementById('itemsInput');
   var newItem = document.getElementById('newItem');
   var addBtn = document.getElementById('addBtn');
@@ -169,12 +180,12 @@
   var chipsEl = document.getElementById('chips');
   var resultEl = document.getElementById('result');
   var spinBtn = document.getElementById('spinBtn');
+
   var yearEl = document.getElementById('year'); if(yearEl){ yearEl.textContent = String((new Date()).getFullYear()); }
 
   var canvas = document.getElementById('wheelCanvas');
   var ctx = canvas.getContext('2d');
-  var W = canvas.width, H = canvas.height;
-  var CX = W/2, CY = H/2, R = Math.min(W,H)/2 - 16;
+  var W = canvas.width, H = canvas.height; var CX = W/2, CY = H/2, R = Math.min(W,H)/2 - 16;
 
   var confetti = document.getElementById('confetti');
   var cctx = confetti.getContext('2d');
@@ -187,58 +198,42 @@
     var raw = itemsInput ? itemsInput.value : '';
     items = raw.split(',').map(function(s){ return s.trim(); }).filter(function(v){ return v; });
     renderChips();
-    draw(rotation);
+    draw(0);
   }
-
   function renderChips(){
-    if(!chipsEl) return;
-    chipsEl.innerHTML = '';
-    var i;
-    for(i=0;i<items.length;i++){
+    if(!chipsEl) return; chipsEl.innerHTML='';
+    var i; for(i=0;i<items.length;i++){
       (function(idx){
+        var t = items[idx];
         var el = document.createElement('span');
-        el.className = 'chip rem';
-        el.textContent = items[idx];
-        el.title = 'Удалить';
-        el.onclick = function(){
-          items.splice(idx,1);
-          if(itemsInput) itemsInput.value = items.join(', ');
-          parseItems();
-        };
+        el.className='chip rem'; el.textContent=t; el.title='Удалить';
+        el.onclick=function(){ items.splice(idx,1); if(itemsInput){ itemsInput.value = items.join(', '); } parseItems(); };
         chipsEl.appendChild(el);
       })(i);
     }
   }
-
-  function cryptoRandom(){
-    var a=new Uint32Array(1);
-    window.crypto.getRandomValues(a);
-    return a[0]/Math.pow(2,32);
-  }
+  function cryptoRandom(){ var a=new Uint32Array(1); window.crypto.getRandomValues(a); return a[0]/Math.pow(2,32); }
 
   var PAL = ['#f87171','#fbbf24','#34d399','#60a5fa','#a78bfa','#f472b6','#fb923c','#22d3ee','#84cc16','#e879f9'];
 
-  // ===== Drawing
   function draw(rot){
     // reset and clear
     ctx.setTransform(1,0,0,1,0,0);
     ctx.clearRect(0,0,W,H);
 
-    if(items.length < 2){
+    if(items.length<2){
       ctx.fillStyle='#fff'; ctx.beginPath(); ctx.arc(CX,CY,R,0,Math.PI*2); ctx.fill();
       ctx.strokeStyle='#e5e7eb'; ctx.lineWidth=2; ctx.stroke();
-      ctx.fillStyle='#9ca3af'; ctx.font='16px system-ui,sans-serif';
-      ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.fillStyle='#9ca3af'; ctx.font='16px system-ui,sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
       ctx.fillText('Добавьте >= 2 элемента', CX, CY);
       return;
     }
 
-    var n = items.length, slice = 2*Math.PI/n;
+    var n=items.length, slice=2*Math.PI/n;
 
-    // sectors
+    // wheel sectors
     ctx.save(); ctx.translate(CX,CY); ctx.rotate(rot);
-    var i;
-    for(i=0;i<n;i++){
+    var i; for(i=0;i<n;i++){
       var a0=i*slice, a1=a0+slice;
       ctx.beginPath(); ctx.moveTo(0,0); ctx.arc(0,0,R,a0,a1); ctx.closePath();
       ctx.fillStyle = PAL[i%PAL.length]; ctx.fill();
@@ -249,147 +244,114 @@
     ctx.strokeStyle='#e5e7eb'; ctx.lineWidth=2; ctx.stroke();
     ctx.restore();
 
-    // horizontal labels near outer edge (fit to arc width)
-    renderLabelsHorizontal(rot, n, slice);
+    // labels along arc near outer edge
+    renderLabelsArc(rot, n, slice);
   }
 
-  function renderLabelsHorizontal(rot, n, slice){
-    var outer = R*0.88;           // near outer edge
-    var radialInset = 6;          // slightly inward
-    var padAng = Math.min(0.25, slice*0.15); // angular padding
+  // render labels along arc, close to outer edge with slight inward tilt
+  function renderLabelsArc(rot, n, slice){
+    // Горизонтальные подписи у дальнего края сектора (без посимвольного изгиба)
+    var outer = R*0.88;                    // ближе к внешнему краю
+    var radialInset = 6;                    // на пару пикселей внутрь, чтобы не прилипало к границе
+    var padAng = Math.min(0.25, slice*0.15);// угловой отступ от границ сектора
 
-    var j;
-    for(j=0;j<n;j++){
+    for(var j=0;j<n;j++){
       var text = String(items[j] || '');
       var mid = j*slice + slice/2;
 
-      // max width available along arc (px)
+      // Максимальная ширина по дуге сектора в пикселях
       var arcMaxPx = (slice - padAng*2) * outer;
 
-      // shrink to fit
+      // Подгон размера шрифта под допустимую ширину
       var size = 18; ctx.font = 'bold '+size+'px system-ui,sans-serif';
       while(ctx.measureText(text).width > arcMaxPx && size > 10){
         size--; ctx.font = 'bold '+size+'px system-ui,sans-serif';
       }
 
-      // position on circle
+      // Позиция метки на окружности с небольшим смещением внутрь
       var ang = mid + rot;
       var gx = CX + Math.cos(ang) * (outer - radialInset);
       var gy = CY + Math.sin(ang) * (outer - radialInset);
 
-      // draw horizontally (screen space)
+      // Рисуем горизонтально (относительно экрана)
       ctx.setTransform(1,0,0,1,0,0);
-      ctx.fillStyle='#111827';
-      ctx.textAlign='center'; ctx.textBaseline='middle';
-      ctx.fillText(text, gx, gy);
+      ctx.fillStyle = '#111827';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      fitTextAt(text, gx, gy, arcMaxPx);
     }
   }
 
-  // ===== Picking index (test mode aware)
+  function fitTextAt(text, x, y, maxPx){
+    var size = 18; ctx.font = 'bold '+size+'px system-ui,sans-serif';
+    while(ctx.measureText(text).width > maxPx && size > 10){
+      size--; ctx.font = 'bold '+size+'px system-ui,sans-serif';
+    }
+    ctx.fillText(text, x, y);
+  }
+
   function pickIndex(){
     if(TEST_MODE && FORCE_VALUE){
-      var needle = FORCE_VALUE.toLowerCase();
-      var i;
-      for(i=0;i<items.length;i++){
-        if(String(items[i]).toLowerCase() === needle) return i;
-      }
+      var idx = -1; var needle = FORCE_VALUE.toLowerCase();
+      var i; for(i=0;i<items.length;i++){ if(String(items[i]).toLowerCase()===needle){ idx=i; break; } }
+      if(idx!==-1) { return idx; }
     }
     return Math.floor(cryptoRandom()*items.length);
   }
 
-  // ===== Confetti
-  var confettiParts=[], confettiActive=false, confettiStart=0;
+  // Confetti
+  var confettiParts=[]; var confettiActive=false; var confettiStart=0;
   function launchConfetti(){
     confettiParts=[]; confettiActive=true; confettiStart=performance.now(); cctx.clearRect(0,0,W,H);
-    var N=150, i;
-    for(i=0;i<N;i++){
-      confettiParts.push({
-        x: CX, y: CY-20,
-        vx: (cryptoRandom()*2-1)*6,
-        vy: -Math.random()*8-4,
-        g: 0.18+Math.random()*0.08,
-        s: 4+Math.random()*4,
-        r: Math.random()*Math.PI,
-        vr: (cryptoRandom()*2-1)*0.2,
-        c: PAL[i%PAL.length]
-      });
+    var N=150; var i; for(i=0;i<N;i++){
+      confettiParts.push({ x: CX, y: CY-20, vx: (cryptoRandom()*2-1)*6, vy: -Math.random()*8-4, g: 0.18+Math.random()*0.08, s: 4+Math.random()*4, r: Math.random()*Math.PI, vr: (cryptoRandom()*2-1)*0.2, c: PAL[i%PAL.length] });
     }
     requestAnimationFrame(confettiFrame);
   }
   function confettiFrame(now){
-    if(!confettiActive) return;
-    var t=now-confettiStart; cctx.clearRect(0,0,W,H);
-    var i;
-    for(i=0;i<confettiParts.length;i++){
-      var p = confettiParts[i];
-      p.vy += p.g; p.x += p.vx; p.y += p.vy; p.r += p.vr;
-      cctx.save(); cctx.translate(p.x,p.y); cctx.rotate(p.r);
-      cctx.fillStyle=p.c; cctx.fillRect(-p.s/2,-p.s/2,p.s,p.s);
-      cctx.restore();
+    if(!confettiActive) return; var t=now-confettiStart; cctx.clearRect(0,0,W,H);
+    var i; for(i=0;i<confettiParts.length;i++){
+      var p = confettiParts[i]; p.vy += p.g; p.x += p.vx; p.y += p.vy; p.r += p.vr; cctx.save(); cctx.translate(p.x,p.y); cctx.rotate(p.r); cctx.fillStyle=p.c; cctx.fillRect(-p.s/2,-p.s/2,p.s,p.s); cctx.restore();
     }
     if(t<3000){ requestAnimationFrame(confettiFrame); } else { confettiActive=false; cctx.clearRect(0,0,W,H); }
   }
 
-  // ===== Spin logic
+  // Spin
   var TAU = Math.PI*2;
   function norm(a){ a=a%TAU; return a<0? a+TAU : a; }
-
   function spin(){
-    if(spinning || items.length<2) return;
-    spinning = true;
-    if(resultEl) resultEl.textContent = '...';
-    if(spinBtn) spinBtn.disabled = true;
-
-    var n=items.length, slice=TAU/n, idx=pickIndex();
+    if(spinning || items.length<2) return; spinning=true; if(resultEl){ resultEl.textContent='...'; } if(spinBtn){ spinBtn.disabled=true; }
+    var n=items.length, slice=TAU/n; var idx = pickIndex();
     var target = (Math.PI*3/2) - (idx*slice + slice/2);
 
     var base = norm(rotation);
     var targetBase = norm(target);
     var delta = targetBase - base;
-    if(delta <= 0) delta += TAU;
+    if (delta <= 0) { delta += TAU; }
 
-    var extraTurns = 6 + Math.floor(cryptoRandom()*3); // 6–8 full spins
+    var extraTurns = 6 + Math.floor(cryptoRandom()*3);
     var final = rotation + delta + extraTurns*TAU;
 
-    var start = performance.now();
-    var dur = 4400;
-    var startRot = rotation;
-
+    var start=performance.now(); var dur=4400; var startRot=rotation;
     function ease(t){ return 1 - Math.pow(1 - t, 3); }
-
     function frame(now){
-      var t = Math.min(1, (now - start) / dur);
-      rotation = startRot + (final - startRot) * ease(t);
-      draw(rotation);
-      if(t < 1){
-        requestAnimationFrame(frame);
-      }else{
+      var t = Math.min(1,(now-start)/dur); rotation = startRot + (final-startRot)*ease(t); draw(rotation);
+      if(t<1){ requestAnimationFrame(frame); } else {
         rotation = norm(final);
-        if(resultEl) resultEl.textContent = items[idx];
-        spinning = false;
-        if(spinBtn) spinBtn.disabled = false;
-        launchConfetti();
+        if(resultEl){ resultEl.textContent = items[idx]; }
+        spinning=false; if(spinBtn){ spinBtn.disabled=false; } launchConfetti();
       }
     }
     requestAnimationFrame(frame);
   }
 
-  // ===== Events
-  if(addBtn){
-    addBtn.addEventListener('click', function(){
-      var v = (newItem && newItem.value ? newItem.value : '').trim();
-      if(!v) return;
-      var cur = (itemsInput && itemsInput.value ? itemsInput.value : '').trim();
-      if(itemsInput) itemsInput.value = cur ? (cur + ', ' + v) : v;
-      if(newItem) newItem.value = '';
-      parseItems();
-    });
-  }
-  if(applyBtn) applyBtn.addEventListener('click', parseItems);
-  if(spinBtn)  spinBtn.addEventListener('click',  spin);
+  // Events
+  if(addBtn){ addBtn.addEventListener('click', function(){ var v=(newItem&&newItem.value?newItem.value:'').trim(); if(!v) return; var cur=(itemsInput&&itemsInput.value?itemsInput.value:'').trim(); if(itemsInput){ itemsInput.value = cur? cur+', '+v : v; } if(newItem){ newItem.value=''; } parseItems(); }); }
+  if(applyBtn){ applyBtn.addEventListener('click', parseItems); }
+  if(spinBtn){ spinBtn.addEventListener('click', spin); }
 
-  // ===== Init
-  parseItems(); draw(rotation);
+  // Init
+  parseItems(); draw(0);
 })();
 </script>
 </body>
